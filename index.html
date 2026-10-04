@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#5c0000">
+  <title>TugasKu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="latar" aria-hidden="true"></div>
+
+    <!-- 1 LOGIN -->
+    <section id="halamanLogin" class="login">
+      <div class="login-kartu">
+        <div class="login-kiri">
+          <div class="logo-besar">Tugas<span class="ku">Ku</span></div>
+          <h2 class="tagline">Buat tugas mu lebih terkontrol<br>dengan Tugas<span class="ku kecil">Ku</span></h2>
+          <ul class="fitur">
+            <li><span>✓</span> Tugas tersusun rapi</li>
+            <li><span>✓</span> Pengingat Deadline</li>
+            <li><span>✓</span> Pembagian tugas otomatis</li>
+          </ul>
+        </div>
+
+        <form id="formLogin" class="login-kanan" autocomplete="off">
+          <h2>Buat akun</h2>
+          <p class="sub">Masuk</p>
+
+          <label for="loginNama">Nama pengguna :</label>
+          <input type="text" id="loginNama" placeholder="Masukkan nama pengguna" required>
+
+          <label for="loginSandi">Masukkan Password :</label>
+          <input type="password" id="loginSandi" placeholder="Masukkan password" required>
+
+          <p id="loginPesan" class="pesan-error" hidden></p>
+          <button type="submit" class="tombol-masuk">Masuk</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===================== APLIKASI ===================== -->
+    <div id="aplikasi" class="app" hidden>
+      <header class="topbar">
+        <button id="tombolMenu" class="hamburger" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="logo-sidebar">Tugas<span class="ku">Ku</span></div>
+      </header>
+      <div id="overlay" class="overlay"></div>
+
+      <aside class="sidebar" id="sidebar">
+        <div class="sb-kepala">
+          <div class="sb-logo">
+            <div class="logo-sidebar">Tugas<span class="ku">Ku</span></div>
+            <small>Kelola tugas tanpa ribet.</small>
+          </div>
+          <button id="tombolTutupMenu" class="sb-tutup" type="button" aria-label="Tutup menu">✕</button>
+        </div>
+
+        <nav class="sb-nav" aria-label="Navigasi utama">
+          <button class="nav-item aktif" data-view="dashboard"><i>⌂</i> Dashboard</button>
+          <button class="nav-item" data-view="kelompok"><i>▣</i> Tugas Kelompok</button>
+          <button class="nav-item" data-view="mandiri"><i>✓</i> Tugas Mandiri</button>
+          <button class="nav-item" data-view="pembagian"><i>⇄</i> Pembagian Tugas</button>
+          <button class="nav-item" data-view="kalender"><i>▦</i> Kalender</button>
+        </nav>
+
+        <div class="sb-notif">
+          <p>Notifikasi</p>
+          <div id="notifList"></div>
+        </div>
+
+        <button id="tombolNotif" class="sb-animasi sb-notifbtn" type="button">Aktifkan notifikasi H-1</button>
+        <button id="tombolAnimasi" class="sb-animasi" type="button" aria-pressed="true">Animasi: hidup</button>
+        <button id="tombolKeluar" class="sb-keluar">Keluar</button>
+      </aside>
+
+      <main class="utama" id="kontenUtama" aria-label="Konten utama aplikasi">
+
+        <!-- 2 DASHBOARD-->
+        <section id="view-dashboard" class="view">
+          <header class="kepala-halaman">
+            <h1 class="salam"><span class="merah">Selamat</span> datang kembali,<br><span class="merah" id="namaUser">Ocha.</span></h1>
+          </header>
+
+          <div class="banner">
+            <div>
+              <h3>Atur tugas, deadline, dan progresmu dalam satu tempat.</h3>
+              <p>Hari ini fokus pada tugas yang paling dekat deadline.</p>
+            </div>
+            <button class="tombol-banner" data-view="kelompok">+ Tambah Tugas</button>
+          </div>
+
+          <div class="statistik">
+            <div class="stat"><span class="stat-label"><b class="ikon-merah">✚</b> Total Tugas minggu ini</span><strong id="statTotal">0</strong></div>
+            <div class="stat"><span class="stat-label"><b>◷</b> Belum Selesai</span><strong id="statBelum">0</strong></div>
+            <div class="stat"><span class="stat-label"><b class="ikon-merah">✔</b> Selesai</span><strong id="statSelesai">0</strong></div>
+            <div class="stat"><span class="stat-label">Deadline Dekat <b class="ikon-merah">!</b></span><strong id="statDekat">0</strong></div>
+          </div>
+
+          <div class="bawah">
+            <div class="kartu kartu-progres">
+              <h4>Progress Tugas</h4>
+              <div class="progres-isi">
+                <div class="donut" id="donut">
+                  <div class="donut-isi"> 
+                    <strong id="donutPersen">0%</strong>
+                    <small id="donutKet">0 dari 0 tugas selesai</small>
+                  </div>
+                </div>
+                <div class="chip-kolom">
+                  <span class="chip hijau" id="chipSelesai">0 selesai</span>
+                  <span class="chip oranye" id="chipProses">0 dalam proses</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="kartu kartu-deadline">
+              <div class="deadline-kepala">
+                <div>
+                  <h4>Tugas mepet deadline</h4>
+                  <p id="pengingat" class="kecil">Pengingat berikutnya: -</p>
+                </div>
+                <div class="deadline-aksi">
+                  <button class="pil gelap" id="tombolMulai">Mulai Kerjakan</button>
+                  <span class="pil krem">Rencana otomatis aktif</span>
+                </div>
+              </div>
+              <div id="daftarDeadline" class="daftar-deadline"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3 TUGAS KELOMPOK -->
+        <section id="view-kelompok" class="view" hidden>
+          <header class="kepala-halaman">
+            <h1 class="judul-halaman">Tugas Kelompok</h1>
+            <p class="sub-halaman">Buat tugas, bagi pekerjaan, dan pantau progres tim dari satu tempat.</p>
+          </header>
+
+          <div class="kelompok-grid">
+            <form id="formKelompok" class="kartu form-kelompok" autocomplete="off">
+              <h3>Tambah Tugas Kelompok</h3>
+
+              <label for="kJudul">Judul Tugas</label>
+              <input type="text" id="kJudul" placeholder="Contoh: Makalah Jaringan Komputer" required>
+
+              <label for="kTopik">Topik</label>
+              <input type="text" id="kTopik" placeholder="Contoh: Statistika">
+
+              <label for="kJenis">Jenis Tugas</label>
+              <input type="text" id="kJenis" placeholder="Makalah / Diskusi Kelompok / PPT / Laporan">
+
+              <label for="kDeadline">Deadline</label>
+              <input type="datetime-local" id="kDeadline" required>
+
+              <div class="form-bawah">
+                <div>
+                  <span class="label-kecil">Estimasi waktu</span>
+                  <span class="chip krem-isi" id="kEstimasi">± 4 jam</span>
+                </div>
+                <button type="submit" class="tombol-coklat">Buat rencana otomatis</button>
+              </div>
+            </form>
+
+            <div class="kolom-kanan">
+              <article class="kartu-krem preview">
+                <div class="preview-kiri">
+                  <h5>Nama Kelompok :</h5>
+                  <ul id="daftarAnggota"></ul>
+                </div>
+                <div class="preview-kanan">
+                  <h5>Preview Tugas &amp; Tim</h5>
+                  <span class="chip pink-kecil">KELOMPOK</span>
+                  <h3 id="pvJudul">Makalah Jaringan Komputer</h3>
+                  <p class="kecil" id="pvDeadline">Deadline: 4 Oktober 2026 • 10:00</p>
+                  <div class="preview-aksi">
+                    <span class="chip oranye-isi" id="pvProgres">40% berjalan</span>
+                    <button class="tombol-coklat kecil-btn" id="tombolBagikan" type="button">Bagikan grup</button>
+                  </div>
+                </div>
+              </article>
+
+              <div class="kartu-krem pembagian">
+                <h4>Pembagian Tugas</h4>
+                <div id="daftarPembagian" class="daftar-pembagian"></div>
+                <button class="tombol-coklat kecil-btn tengah" id="tombolAcak" type="button">Acak Ulang</button>
+              </div>
+
+              <div class="kartu-krem riwayat">
+                <div class="riwayat-kepala">
+                  <h4>Riwayat Kelompok</h4>
+                  <button class="mini bahaya" id="tombolHapusSemua" type="button" hidden>Hapus semua</button>
+                </div>
+                <div id="daftarRiwayat" class="daftar-riwayat"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!--4 TUGAS MANDIRI -->
+        <section id="view-mandiri" class="view" hidden>
+          <header class="kepala-halaman">
+            <h1 class="judul-halaman">Tugas Mandiri</h1>
+            <p class="sub-halaman">Masukkan tugas, TugasKu akan membuatkan kerangka dan rencana pengerjaan.</p>
+          </header>
+
+          <div class="mandiri-grid">
+            <form id="formMandiri" class="kartu form-kelompok" autocomplete="off">
+              <h3>Tambah Tugas Mandiri</h3>
+
+              <label for="mJudul">Judul Tugas</label>
+              <input type="text" id="mJudul" placeholder="Contoh: Laporan Praktikum" required>
+
+              <label for="mJenis">Jenis Tugas</label>
+              <select id="mJenis">
+                <option value="laporan" selected>Tugas Laporan</option>
+                <option value="makalah">Tugas Makalah</option>
+                <option value="ppt">Tugas PPT</option>
+                <option value="diskusi">Tugas Diskusi</option>
+              </select>
+
+              <label for="mTopik">Topik</label>
+              <input type="text" id="mTopik" placeholder="Contoh: Mini proyek">
+
+              <label for="mDeadline">Deadline</label>
+              <input type="datetime-local" id="mDeadline" required>
+
+              <div class="form-bawah">
+                <div>
+                  <span class="label-kecil">Estimasi</span>
+                  <span class="chip krem-isi" id="mEstimasi">± 5 jam</span>
+                </div>
+                <button type="submit" class="tombol-coklat">Buat Kerangka</button>
+              </div>
+            </form>
+
+            <div class="kartu-kaca kerangka">
+              <h3>Kerangka &amp; Subtugas</h3>
+              <p class="kecil">Checklist otomatis dihitung menjadi progress tugas.</p>
+              <div id="pilihMandiri" class="pilih-mandiri"></div>
+              <ul id="daftarSubtugas" class="subtugas"></ul>
+              <div class="kerangka-aksi">
+                <button class="tombol-coklat kecil-btn mauve" id="tombolMulaiMandiri" type="button">Mulai Kerjakan</button>
+                <span class="chip oranye-isi" id="progresMandiri">0%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 05 PEMBAGIAN TUGAS  -->
+        <section id="view-pembagian" class="view" hidden>
+          <header class="kepala-halaman">
+            <h1 class="judul-halaman">Pembagian Tugas</h1>
+            <p class="sub-halaman">Bagi bagian tugas secara adil, lalu pantau siapa yang sudah mulai mengerjakan.</p>
+          </header>
+
+          <div class="pembagian-grid">
+            <form id="formPembagian" class="kartu-krem form-kelompok" autocomplete="off">
+              <h3>Atur Pembagian</h3>
+
+              <label for="pTopik">Topik</label>
+              <input type="text" id="pTopik" value="Keamanan Jaringan" placeholder="Contoh: Keamanan Jaringan">
+
+              <label for="pJenis">Jenis Tugas</label>
+              <select id="pJenis">
+                <option value="makalah" selected>Makalah</option>
+                <option value="laporan">Laporan</option>
+                <option value="ppt">PPT</option>
+                <option value="diskusi">Diskusi</option>
+              </select>
+
+              <label for="pJumlah">Jumlah Anggota (orang)</label>
+              <input type="number" id="pJumlah" min="2" max="8" value="4">
+
+              <label for="pNama">Nama Anggota</label>
+              <input type="text" id="pNama" placeholder="Ocha, Nadhif, Suhai, Mia">
+
+              <button type="submit" class="tombol-pembagian-tgs">Bagi Tugas Secara Acak</button>
+            </form>
+
+            <div class="progres-kel">
+              <h3 class="judul-krem">Progress Kelompok</h3>
+              <p class="kecil">Klik kartu anggota untuk menambah progress 10%.</p>
+              <div id="daftarProgres" class="daftar-progres"></div>
+              <div class="rata-kanan">
+                <button class="tombol-coklat" id="tombolBagikan2" type="button">Bagikan</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!--06 KALENDER  -->
+        <section id="view-kalender" class="view" hidden>
+          <header class="kepala-halaman">
+            <h1 class="judul-halaman krem-teks">Kalender Deadline</h1>
+          </header>
+
+          <div class="kartu-kaca kalender">
+            <div class="kal-kepala">
+              <h3 id="kalJudul">Oktober 2026</h3>
+              <div class="kal-aksi">
+                <button class="pil-kal" id="tombolTambahDeadline" type="button">+ Tambah Deadline</button>
+                <button class="bulat" id="kalPrev" type="button" aria-label="Bulan sebelumnya">&lt;</button>
+                <button class="bulat" id="kalNext" type="button" aria-label="Bulan berikutnya">&gt;</button>
+              </div>
+            </div>
+
+            <div class="kal-hari">
+              <span class="h-sen">Sen</span>
+              <span class="h-sel">Sel</span>
+              <span class="h-rab">Rab</span>
+              <span class="h-kam">Kam</span>
+              <span class="h-jum">Jum</span>
+              <span class="h-sab">Sab</span>
+              <span class="h-min">Min</span>
+            </div>
+            <div id="kalGrid" class="kal-grid"></div>
+
+            <div class="kal-bawah">
+              <div class="legenda">
+                <span>Status</span>
+                <span class="lg deadline">Deadline</span>
+                <span class="lg rencana">Rencana</span>
+                <span class="lg selesai">Selesai</span>
+              </div>
+              <div class="kal-rencana">
+                <strong id="kalRencana">-</strong>
+                <small>Klik tugas untuk masuk Focus Mode</small>
+              </div>
+            </div>
+
+            <ul id="kalList" class="kal-list"></ul>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- FOCUS MODE -->
+    <div id="fokus" class="modal" hidden>
+      <div class="modal-kartu kartu fokus-kartu" role="dialog" aria-modal="true" aria-labelledby="fokusJudul">
+        <small class="lbl">Focus Mode</small>
+        <h3 id="fokusJudul">-</h3>
+        <p id="fokusSub" class="kecil">-</p>
+        <div id="fokusTimer" class="timer">25:00</div>
+        <div class="fokus-bar"><i id="fokusBar"></i></div>
+        <div class="modal-aksi">
+          <button type="button" class="tombol-coklat" id="fokusMulai">Mulai</button>
+          <button type="button" class="tombol-coklat terang" id="fokusSelesai">Subtugas selesai</button>
+          <button type="button" class="tombol-coklat terang" id="fokusTutup">Tutup</button>
+        </div>
+      </div>
+    </div>
+
+    <!--TAMBAH DEADLINE  -->
+    <div id="modalDeadline" class="modal" hidden>
+      <form id="formDeadline" class="modal-kartu kartu form-kelompok" autocomplete="off">
+        <h3>Tambah Deadline</h3>
+
+        <label for="dJudul">Nama Tugas</label>
+        <input type="text" id="dJudul" placeholder="Contoh: Kuis Basis Data" required>
+
+        <label for="dDeadline">Deadline</label>
+        <input type="datetime-local" id="dDeadline" required>
+
+        <div class="modal-aksi">
+          <button type="submit" class="tombol-coklat">Simpan</button>
+          <button type="button" class="tombol-coklat terang" id="dBatal">Batal</button>
+        </div>
+      </form>
+    </div>
+
+    <footer class="mini-footer">
+      <p>&copy; 2026 <strong>TugasKu</strong>. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <div id="toast" class="toast" hidden></div>
+    <script src="script.js"></script>
+</body>
+</html>
