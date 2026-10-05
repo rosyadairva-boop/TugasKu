@@ -66,7 +66,7 @@ function muatData() {
   mandiriAktif = mandiri.length ? mandiri[0].id : null;
 }
 
-// ---------- Util ----------
+// ---------- menu tambahan ----------
 const pad = (n) => String(n).padStart(2, "0");
 
 function kunciTanggal(d) {
@@ -220,7 +220,7 @@ function sinkronMandiri(m) {
 }
 
 
-// LOGIN
+// ======== LOGIN ========
 
 $("formLogin").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -262,9 +262,8 @@ function bukaAplikasi() {
   cekDeadline();
 }
 
-// =====================================================
-// MENU HAMBURGER (HP / tablet)
-// =====================================================
+// ======= MENU GARIS 3 ========
+
 function bukaMenu() {
   $("sidebar").classList.add("buka");
   $("overlay").classList.add("tampil");
@@ -289,9 +288,9 @@ window.addEventListener("resize", () => {
   if (window.innerWidth > 1024) tutupMenu();
 });
 
-// =====================================================
-// NAVIGASI
-// =====================================================
+
+// ======= NAVIGASI =======
+
 function renderView(nama) {
   if (nama === "dashboard") renderDashboard();
   if (nama === "kelompok") renderKelompok();
@@ -320,9 +319,8 @@ document.querySelectorAll("[data-view]").forEach((b) => {
   b.addEventListener("click", () => tampilkan(b.dataset.view));
 });
 
-// =====================================================
-// NOTIFIKASI (sidebar)
-// =====================================================
+// ======== NOTIFIKASI (sidebar) =========
+
 function renderNotifikasi() {
   const box = $("notifList");
   box.innerHTML = "";
@@ -352,9 +350,8 @@ function renderNotifikasi() {
   }
 }
 
-// =====================================================
-// PENGINGAT H-1 (notifikasi sistem + toast di dalam aplikasi)
-// =====================================================
+
+// PENGINGAT H-1 
 const SEHARI = 24 * 60 * 60 * 1000;
 
 const dukungNotif = () => "Notification" in window;
@@ -448,9 +445,9 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// =====================================================
-// DASHBOARD
-// =====================================================
+
+// ======= DASHBOARD =======
+
 function renderDashboard() {
   const total = tugas.length;
   const selesai = tugas.filter((t) => t.selesai).length;
@@ -506,9 +503,8 @@ $("tombolMulai").addEventListener("click", () => {
   bukaFokus(aktif[0].id);
 });
 
-// =====================================================
-// TUGAS KELOMPOK
-// =====================================================
+// ======= TUGAS KELOMPOK =======
+
 function ringkasanTim() {
   const kepala = kelompok.id !== null
     ? `Tugas Kelompok: ${kelompok.judul}\nDeadline: ${tglPanjang(kelompok.deadline)} • ${jam(kelompok.deadline)}\n\n`
@@ -694,7 +690,7 @@ $("tombolAcak").addEventListener("click", () => {
 $("tombolBagikan").addEventListener("click", salinRingkasan);
 $("tombolHapusSemua").addEventListener("click", hapusSemuaKelompok);
 
-// TUGAS MANDIRI
+// ======== TUGAS MANDIRI =======
 
 function renderMandiri() {
   const pilih = $("pilihMandiri");
@@ -878,9 +874,8 @@ $("formPembagian").addEventListener("submit", (e) => {
 
 $("tombolBagikan2").addEventListener("click", salinRingkasan);
 
-// =====================================================
-// KALENDER
-// =====================================================
+// ======== KALENDER =========
+
 function namaBulan(tahun, bulan) {
   const s = new Date(tahun, bulan, 1).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -1107,9 +1102,8 @@ document.addEventListener("keydown", (e) => {
   $("modalDeadline").hidden = true;
 });
 
-// =====================================================
-// ANIMASI (bisa dimatikan / otomatis hemat di HP lemah)
-// =====================================================
+// ANIMASI (bisa dimatikan)
+
 const hemat = () => document.documentElement.classList.contains("hemat");
 
 function aturAnimasi(hidup) {
@@ -1232,9 +1226,7 @@ if (latar && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
   }, { passive: true });
 }
 
-// =====================================================
 // MULAI
-// =====================================================
 if (localStorage.getItem(KUNCI_USER)) {
   bukaAplikasi();
 }
